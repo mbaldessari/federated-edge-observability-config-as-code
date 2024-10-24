@@ -1,0 +1,92 @@
+# vim: ft=yaml.ansible
+---
+controller_validate_certs: false
+
+controller_configuration_async_retries: 30
+
+controller_settings:
+  - name: AWX_COLLECTIONS_ENABLED
+    value: true
+
+  - name: AWX_ROLES_ENABLED
+    value: true
+
+controller_projects:
+  - name: Demo Project
+    state: absent
+
+controller_organizations:
+  - name: Federated Open Telemetry
+    galaxy_credentials: Ansible Galaxy
+
+  - name: Default
+    state: absent
+
+controller_inventories: []
+
+controller_inventory_sources: []
+
+controller_credential_types:
+  - name: Kubeconfig
+    description: kubeconfig file
+    kind: cloud
+    inputs:
+      fields:
+        - id: kube_config
+          type: string
+          label: kubeconfig
+          secret: true
+          multiline: true
+      required:
+        - kube_config
+    injectors:
+      env:
+        K8S_AUTH_KUBECONFIG: "{  { tower.filename.kubeconfig }}"
+      file:
+        template.kubeconfig: "{  { kube_config }}"
+
+  - name: RHSMcredential
+    description: RHSM Credentials
+    kind: cloud
+    inputs:
+      fields:
+        - id: username
+          type: string
+          label: RHSM User name
+          secret: true
+        - id: password
+          type: string
+          label: RHSM password
+          secret: true
+      required:
+        - username
+        - password
+    injectors:
+      extra_vars:
+        rhsm_username: "{  { username }}"
+        rhsm_password: "{  { password }}"
+
+controller_templates:
+  - name: Demo Job Template
+    state: absent
+
+controller_credentials:
+  - name: Hashivault
+    description: In-Cluster Hashicorp vault lookup
+    organization: Federated Open Telemetry
+    credential_type: HashiCorp Vault Secret Lookup
+    inputs:
+      url: "{{ secrets['vault_url'] }}"
+      token: "{{ secrets['vault_root_token'] }}"
+      cacert: "{{ secrets['vault_ca'] }}"
+      api_version: v2
+
+  - name: rhsm_credential
+    description: RHSM credential registering RHEL VMs
+    organization: Federated Open Telemetry
+    credential_type: RHSMcredential
+
+  - name: vm-private-key
+    description: Machine credential for virtual machines
+    organization: Federated Open Telemetry
+    credential_type: Machine
