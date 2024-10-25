@@ -1,8 +1,8 @@
-# Federated Open Telemetry Config As Code Repo
+# Federated Edge Observability Config As Code Repo
 
 ## What is this?
 
-This provides an Ansible Automation Platform config-as-code repository to run the Federated Open Telemetry Validated Pattern.
+This provides an Ansible Automation Platform config-as-code repository to run the Federated Edge Observability Validated Pattern.
 
 ## How do I get started?
 
