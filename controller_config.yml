@@ -16,7 +16,7 @@ controller_projects:
     state: absent
 
   - name: Federated Edge Observability GitOps
-    organization: HMI Demo
+    organization: Federated Edge Observability
     scm_branch: main
     scm_clean: "no"
     scm_delete_on_update: "no"
@@ -50,10 +50,17 @@ controller_inventories:
     host_filter: name__icontains=edgenode
     inventory: Federated Edge Observability Static Inventory
 
-  - name: HMI Demo Inventory
-    organization: HMI Demo
+  - name: Federated Edge Observability Inventory
+    organization: Federated Edge Observability
 
-controller_inventory_sources: []
+controller_inventory_sources:
+  - name: Federated Edge Observability Static Inventory
+    inventory: Federated Edge Observability Inventory
+    organization: Federated Edge Observability
+    source: scm
+    source_project: Federated Edge Observablity Inventory
+    source_path: inventory
+    update_on_launch: true
 
 controller_credential_types:
   - name: RHSMcredential
