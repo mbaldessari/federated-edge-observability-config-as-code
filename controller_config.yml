@@ -93,7 +93,7 @@ controller_templates:
     project: Federated Edge Observability GitOps
     job_type: run
     playbook: playbooks/ping.yml
-    inventory: Edge Node VMs
+    inventory: Edge Nodes
     credentials:
       - vm-private-key
     execution_environment: Default execution environment
@@ -103,7 +103,7 @@ controller_templates:
     project: Federated Edge Observability GitOps
     job_type: run
     playbook: playbooks/otel_playbook.yml
-    inventory: Edge Node VMs
+    inventory: Edge Nodes
     credentials:
       - vm-private-key
       - rhsm_credential
