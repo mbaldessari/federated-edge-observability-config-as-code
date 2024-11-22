@@ -58,7 +58,7 @@ controller_inventory_sources:
     inventory: Federated Edge Observability Inventory
     organization: Federated Edge Observability
     source: scm
-    source_project: Federated Edge Observablity Inventory
+    source_project: Federated Edge Observability Inventory
     source_path: inventory
     update_on_launch: true
 
