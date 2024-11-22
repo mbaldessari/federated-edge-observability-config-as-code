@@ -1,8 +1,8 @@
 # vim: ft=yaml.ansible
 ---
-controller_validate_certs: false
-
-controller_configuration_async_retries: 30
+aap_organizations:
+  - name: Federated Edge Observability
+    galaxy_credentials: Ansible Galaxy
 
 controller_settings:
   - name: AWX_COLLECTIONS_ENABLED
@@ -15,36 +15,11 @@ controller_projects:
   - name: Demo Project
     state: absent
 
-controller_organizations:
-  - name: Federated Open Telemetry
-    galaxy_credentials: Ansible Galaxy
-
-  - name: Default
-    state: absent
-
 controller_inventories: []
 
 controller_inventory_sources: []
 
 controller_credential_types:
-  - name: Kubeconfig
-    description: kubeconfig file
-    kind: cloud
-    inputs:
-      fields:
-        - id: kube_config
-          type: string
-          label: kubeconfig
-          secret: true
-          multiline: true
-      required:
-        - kube_config
-    injectors:
-      env:
-        K8S_AUTH_KUBECONFIG: "{  { tower.filename.kubeconfig }}"
-      file:
-        template.kubeconfig: "{  { kube_config }}"
-
   - name: RHSMcredential
     description: RHSM Credentials
     kind: cloud
@@ -70,10 +45,43 @@ controller_templates:
   - name: Demo Job Template
     state: absent
 
+controller_credential_input_sources:
+  - source_credential: Hashivault
+    target_credential: vm-private-key
+    input_field_name: username
+    metadata:
+      secret_backend: secret
+      secret_path: hub/vm-ssh
+      secret_key: username
+
+  - source_credential: Hashivault
+    target_credential: vm-private-key
+    input_field_name: ssh_key_data
+    metadata:
+      secret_backend: secret
+      secret_path: hub/vm-ssh
+      secret_key: privatekey
+
+  - source_credential: Hashivault
+    target_credential: rhsm_credential
+    input_field_name: username
+    metadata:
+      secret_backend: secret
+      secret_path: hub/rhsm
+      secret_key: username
+
+  - source_credential: Hashivault
+    target_credential: rhsm_credential
+    input_field_name: password
+    metadata:
+      secret_backend: secret
+      secret_path: hub/rhsm
+      secret_key: password
+
 controller_credentials:
   - name: Hashivault
     description: In-Cluster Hashicorp vault lookup
-    organization: Federated Open Telemetry
+    organization: Federated Edge Observability
     credential_type: HashiCorp Vault Secret Lookup
     inputs:
       url: "{{ secrets['vault_url'] }}"
@@ -83,10 +91,10 @@ controller_credentials:
 
   - name: rhsm_credential
     description: RHSM credential registering RHEL VMs
-    organization: Federated Open Telemetry
+    organization: Federated Edge Observability
     credential_type: RHSMcredential
 
   - name: vm-private-key
     description: Machine credential for virtual machines
-    organization: Federated Open Telemetry
+    organization: Federated Edge Observability
     credential_type: Machine
