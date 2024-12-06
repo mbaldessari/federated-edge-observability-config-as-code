@@ -43,12 +43,15 @@ controller_schedules:
     unified_job_template: OTEL Playbook
     rrule: DTSTART:20191219T130500Z RRULE:FREQ=MINUTELY;INTERVAL=10
 
+# This is an example of how to pass Helm variables to the IAC config
 controller_inventories:
   - name: Edge Nodes
     organization: Federated Edge Observability
     kind: smart
     host_filter: name__icontains=edgenode
     inventory: Federated Edge Observability Static Inventory
+    variables:
+      otel_collector_cluster_domain: "{{ helm_values.global.localClusterDomain | default('example.com') }}"
 
   - name: Federated Edge Observability Inventory
     organization: Federated Edge Observability
