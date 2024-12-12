@@ -84,8 +84,8 @@ controller_credential_types:
         - password
     injectors:
       extra_vars:
-        rhsm_username: "{  { username }}"
-        rhsm_password: "{  { password }}"
+        rhsm_username: "{{ username }}"
+        rhsm_password: "{{ password }}"
 
 controller_templates:
   - name: Demo Job Template
